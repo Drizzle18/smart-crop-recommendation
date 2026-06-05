@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up — Smart Crop Recommendation System</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+</head>
+<body class="auth-body">
+
+  <div class="bg-orbs">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+  </div>
+
+  <!-- ================= NAVBAR (landing style) ================= -->
+  <nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+
+    <div class="container-fluid px-lg-5 px-3">
+
+      <!-- LOGO -->
+      <a class="navbar-brand logo-brand" href="{{ url_for('main.landing') }}">
+
+        <div class="logo-icon">
+          <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <div class="logo-text">
+          SmartCrop <span>AI</span>
+        </div>
+
+      </a>
+
+      <!-- MOBILE MENU BUTTON -->
+      <button
+        class="navbar-toggler border-0 shadow-none"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#mobileMenu"
+        aria-controls="mobileMenu"
+      >
+
+        <div class="hamburger">
+
+          <span></span>
+          <span></span>
+          <span></span>
+
+        </div>
+
+      </button>
+
+      <!-- DESKTOP NAVIGATION -->
+      <div class="collapse navbar-collapse d-none d-lg-flex">
+
+        <ul class="navbar-nav ms-auto align-items-center gap-3">
+
+
+          <li class="nav-item">
+            <a class="nav-link" href="/about">
+              About
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="/login" class="btn btn-custom btn-login">
+              Login
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="/signup" class="btn btn-custom btn-signup">
+              Get Started
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+  <!-- ================= MOBILE OFFCANVAS ================= -->
+
+  <div
+    class="offcanvas offcanvas-end mobile-sidebar"
+    tabindex="-1"
+    id="mobileMenu"
+  >
+
+    <div class="offcanvas-header">
+
+      <h5 class="offcanvas-title">
+        🌱 SmartCrop AI
+      </h5>
+
+      <button
+        type="button"
+        class="btn-close btn-close-white shadow-none"
+        data-bs-dismiss="offcanvas"
+        aria-label="Close"
+      ></button>
+
+    </div>
+
+    <div class="offcanvas-body">
+
+      <ul class="navbar-nav">
+
+        
+
+        <li class="nav-item mb-3">
+          <a class="nav-link" href="/about">
+            About
+          </a>
+        </li>
+
+
+        <li class="nav-item mb-4">
+          <a class="nav-link mobile-login" href="/login">
+            Login
+          </a>
+        </li>
+
+        <li class="nav-item mb-4">
+          <a class="nav-link mobile-login" href="/signup">
+            Get Started
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+  <section class="auth-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          <div class="glass-card auth-card reveal">
+            <div class="auth-header text-center">
+              <div class="auth-icon">
+                <i class="fa-solid fa-user-plus"></i>
+              </div>
+              <h1 class="auth-title">Create Your Account</h1>
+              <p class="auth-subtitle">Join smarter farming in seconds</p>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                {% for category, message in messages %}
+                  <div class="alert-glass alert-{{ category }}">
+                    <i class="fa-solid fa-circle-info"></i> {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="/signup" class="auth-form" novalidate>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group-glass">
+                    <label for="first_name"><i class="fa-solid fa-user"></i> First Name</label>
+                    <input type="text" id="first_name" name="first_name" placeholder="John" required>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group-glass">
+                    <label for="last_name"><i class="fa-solid fa-user"></i> Last Name</label>
+                    <input type="text" id="last_name" name="last_name" placeholder="Doe" required>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group-glass">
+                <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+              </div>
+
+              <div class="form-group-glass">
+                <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+                <div class="password-wrapper">
+                  <input type="password" id="password" name="password" placeholder="Create a strong password" required minlength="8">
+                  <button type="button" class="toggle-password" aria-label="Show password">
+                    <i class="fa-solid fa-eye"></i>
+                  </button>
+                </div>
+                <div class="strength-meter">
+                  <div class="strength-bar"><span class="strength-fill"></span></div>
+                  <span class="strength-label">Password strength</span>
+                </div>
+              </div>
+
+              <div class="form-group-glass">
+                <label for="confirm_password"><i class="fa-solid fa-shield-halved"></i> Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Re-enter your password" required>
+              </div>
+
+              <label class="check-glass mb-3">
+                <input type="checkbox" name="terms" required>
+                <span>I agree to the <a href="#" class="link-accent">Terms of Service</a> and <a href="#" class="link-accent">Privacy Policy</a></span>
+              </label>
+
+              <button type="submit" class="btn-glass-primary w-100">
+                <i class="fa-solid fa-seedling"></i> Create Account
+              </button>
+
+              <br>
+              <br>
+              
+
+              <p class="auth-footer-text">
+                Already have an account?
+                <a href="/login" class="link-accent">Log in</a>
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="auth-footer">
+    <div class="container text-center">
+      <p>&copy; 2025 Smart Crop Recommendation System. Built with <i class="fa-solid fa-heart" style="color:#52b788"></i> for sustainable agriculture.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+</body>
+</html>

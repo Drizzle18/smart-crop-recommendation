@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard | Smart Crop Recommendation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+</head>
+
+<body>
+
+<!-- Background -->
+
+<div class="bg-orbs">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+</div>
+
+<!-- Sidebar -->
+
+<aside class="sidebar glass" id="sidebar">
+
+    <div class="sidebar-brand">
+        <div class="logo-mark">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+        <span>CropAI</span>
+    </div>
+
+    <nav class="sidebar-nav">
+
+        <a href="{{ url_for('main.dashboard') }}"
+        class="nav-item active">
+
+            <i class="fa-solid fa-gauge-high"></i>
+            <span>Dashboard</span>
+
+        </a>
+
+        <a href="{{ url_for('main.predict') }}"
+        class="nav-item">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span>New Prediction</span>
+
+        </a>
+
+        <a href="{{ url_for('main.history') }}" class="nav-item">
+
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            <span>Prediction History</span>
+
+        </a>
+
+    </nav>
+
+    <div class="sidebar-footer">
+
+        <a href="{{ url_for('auth.logout') }}"
+        class="nav-item logout">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-text">Logout</span>
+            <span class="logout-spinner spinner" hidden></span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- Main Content -->
+
+<main class="main-content">
+
+    <!-- Topbar -->
+
+    <header class="topbar glass">
+
+        <button
+        class="menu-toggle"
+        id="menuToggle">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
+        <div class="topbar-actions">
+
+            <div class="user-chip">
+
+                <div class="avatar">
+
+                    {{ user.first_name[0]|upper
+                    if user else 'U' }}
+
+                </div>
+
+                <div class="user-meta">
+
+                    <strong>
+
+                        {{ user.first_name
+                        if user else 'Farmer' }}
+
+                    </strong>
+
+                    <small>
+
+                        {{ user.email
+                        if user else '' }}
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- Greeting -->
+
+    <section class="greeting glass">
+
+        <div>
+
+            <span class="eyebrow">
+
+                DASHBOARD
+
+            </span>
+
+            <h1>
+
+                Welcome back,
+
+                <span class="grad">
+
+                    {{ user.first_name
+                    if user else 'Farmer' }}
+
+                </span>
+
+                🌱
+
+            </h1>
+            {% if latest_prediction %}
+
+<p class="last-prediction">
+
+    Last prediction:
+    <strong>
+        {{ latest_prediction.crop|title }}
+    </strong>
+
+    on
+
+    {{ latest_prediction.created_at.strftime('%d %b %Y, %I:%M %p') }}
+
+</p>
+
+{% endif %}
+
+        </div>
+
+        <a href="{{ url_for('main.predict') }}"
+        class="btn-primary">
+
+            <i class="fa-solid fa-plus"></i>
+
+            New Prediction
+
+        </a>
+
+    </section>
+
+    <!-- Stats -->
+<section class="stats-grid">
+
+    <!-- Total Predictions -->
+    <div class="stat-card glass">
+
+        <div class="stat-icon green">
+            <i class="fa-solid fa-seedling"></i>
+        </div>
+
+        <div>
+
+            <small>Total Predictions</small>
+
+            <h2>{{ total_predictions }}</h2>
+
+            <span class="trend">
+
+                {% if total_predictions > 0 %}
+                    Predictions recorded
+                {% else %}
+                    No data yet
+                {% endif %}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Top Crop -->
+    <div class="stat-card glass">
+
+        <div class="stat-icon teal">
+            <i class="fa-solid fa-wheat-awn"></i>
+        </div>
+
+        <div>
+
+            <small>Top Crop</small>
+
+            <h2>{{ top_crop|title }}</h2>
+
+            <span class="trend">
+
+                {% if total_predictions > 0 %}
+                    Most recommended crop
+                {% else %}
+                    Awaiting predictions
+                {% endif %}
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Account Age -->
+    <div class="stat-card glass">
+
+        <div class="stat-icon orange">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div>
+            <small>Latest Crop</small>
+            <h2>
+                {{ latest_crop|title }}
+            </h2>
+
+            <span class="trend">
+                Last recommendation
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+    <!-- Recent Predictions -->
+
+<section
+class="panel glass"
+id="history">
+
+    <div class="panel-head">
+
+        <h3>
+
+            <i class="fa-solid fa-clock-rotate-left"></i>
+
+            Recent Predictions
+
+        </h3>
+
+        {% if total_predictions > 5 %}
+
+        <a href="{{ url_for('main.history') }}"
+           class="view-all">
+
+            View All
+
+        </a>
+
+        {% endif %}
+
+    </div>
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Crop</th>
+
+                    <th>Accuracy</th>
+
+                    <th>Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% if predictions %}
+
+                {% for prediction in predictions[:5] %}
+
+                <tr>
+
+                    <td>
+
+                        {{ prediction.created_at.strftime('%d %b %Y') }}
+
+                    </td>
+               <td class="crop-cell">
+               <img
+        src="{{ url_for(
+            'static',
+            filename='images/crops/' +
+            prediction.crop|lower +
+            '.jpg'
+        ) }}"
+        class="crop-thumb"
+        alt="{{ prediction.crop }}">
+
+    {{ prediction.crop|title }}
+                 </td>
+
+                    <td>
+
+                        <span class="status success">
+
+                        {{ prediction.confidence if prediction.confidence else '99.55' }}%
+
+                        </span>
+
+                    </td>
+
+                    <td class="actions">
+                        <!-- View Prediction -->
+                        <a href="{{ url_for('main.view_prediction', prediction_id=prediction.id) }}"
+                           class="action-btn view-btn">
+                            <i class="fa-solid fa-eye"></i>
+                            View
+                        </a>
+
+                        <!-- Delete Prediction -->
+                        <form method="POST"
+                              action="{{ url_for('main.delete_history', id=prediction.id) }}"
+                              class="action-form">
+                            <button type="submit"
+                                    class="action-btn delete-btn"
+                                    onclick="return confirm('Delete this prediction permanently?');">
+                                <i class="fa-solid fa-trash"></i>
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+
+                </tr>
+
+{% endfor %}
+
+{% else %}
+
+<tr>
+
+    <td colspan="4"
+        style="
+        text-align:center;
+        color:#9bbfae;
+        padding:2rem;">
+
+        No predictions yet.
+
+    </td>
+
+</tr>
+
+{% endif %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</section>
+    <!-- Quick Actions -->
+
+    <section class="quick-actions">
+
+        <a href="{{ url_for('main.predict') }}"
+        class="action-card glass">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+            <h4>New Prediction</h4>
+
+            <p>
+                Run crop recommendation analysis.
+            </p>
+
+        </a>
+
+        <a href="{{ url_for('main.about') }}"
+        class="action-card glass">
+
+            <i class="fa-solid fa-book-open"></i>
+
+            <h4>About System</h4>
+
+            <p>
+                Learn how the recommendation engine works.
+            </p>
+
+        </a>
+        <a href="{{ url_for('main.history') }}"
+class="action-card glass">
+
+    <i class="fa-solid fa-clock-rotate-left"></i>
+
+    <h4>Prediction History</h4>
+
+    <p>
+        View previous recommendations.
+    </p>
+
+</a>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static',
+filename='js/dashboard.js') }}">
+</script>
+
+</body>
+</html>

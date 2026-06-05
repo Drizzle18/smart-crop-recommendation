@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Smart Crop Recommendation System</title>
+  <meta name="description" content="Learn how the Smart Crop Recommendation System uses machine learning to help farmers and students choose the best crop based on soil and climate conditions." />
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Shared site style + page-specific -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}" />
+</head>
+<body class="about-page">
+
+    
+ <!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg fixed-top custom-navbar">
+
+  <div class="container-fluid px-lg-5 px-3">
+
+    <!-- LOGO -->
+    <a class="navbar-brand logo-brand" href="#">
+
+      <div class="logo-icon">
+        <i class="fa-solid fa-seedling"></i>
+      </div>
+
+      <div class="logo-text">
+        SmartCrop <span>AI</span>
+      </div>
+
+    </a>
+
+    <!-- MOBILE MENU BUTTON -->
+    <button
+      class="navbar-toggler border-0 shadow-none"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#mobileMenu"
+      aria-controls="mobileMenu"
+    >
+
+      <div class="hamburger">
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+      </div>
+
+    </button>
+
+    <!-- DESKTOP NAVIGATION -->
+    <div class="collapse navbar-collapse d-none d-lg-flex">
+
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+
+        
+
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            Home
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/login" class="btn btn-custom btn-login">
+            Login
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/signup" class="btn btn-custom btn-signup">
+            Get Started
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+
+  </div>
+
+</nav>
+
+<!-- ================= MOBILE OFFCANVAS ================= -->
+
+<div
+  class="offcanvas offcanvas-end mobile-sidebar"
+  tabindex="-1"
+  id="mobileMenu"
+>
+
+  <div class="offcanvas-header">
+
+    <h5 class="offcanvas-title">
+      🌱 SmartCrop AI
+    </h5>
+
+    <button
+      type="button"
+      class="btn-close btn-close-white shadow-none"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+
+  </div>
+
+  <div class="offcanvas-body">
+
+    <ul class="navbar-nav">
+
+
+      <li class="nav-item mb-3">
+        <a class="nav-link" href="/">
+          Home
+        </a>
+      </li>
+
+
+      <li class="nav-item mb-4">
+        <a class="nav-link mobile-login" href="/login">
+          Login
+        </a>
+      </li>
+
+      <li class="nav-item mb-4">
+        <a class="nav-link mobile-login" href="/signup">
+          Get Started
+        </a>
+      </li>
+
+
+
+
+    </ul>
+
+  </div>
+
+</div>
+
+
+  <!-- ============ HERO ============ -->
+  <header class="about-hero">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="container position-relative">
+      <div class="row justify-content-center text-center">
+        <div class="col-lg-9">
+          <span class="pill-badge"><i class="fa-solid fa-leaf"></i> About the Project</span>
+          <h1 class="hero-title">
+            Smarter Farming, <span class="grad-text">Powered by AI</span>
+          </h1>
+          <p class="hero-sub">
+            Smart Crop Recommendation System helps farmers, students and agricultural researchers
+            choose the most suitable crop for their land using machine learning trained on real
+            soil and climate data.
+          </p>
+          <div class="hero-actions">
+            <a href="/signup" class="btn btn-glow-green btn-lg">
+              <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Try Prediction
+            </a>
+            <a href="#how-it-works" class="btn btn-ghost-green btn-lg">
+              <i class="fa-solid fa-circle-info me-2"></i>How It Works
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat strip -->
+      <div class="row g-3 stat-strip mt-5">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num">99.5%</div><div class="stat-label">Model Accuracy</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num">22</div><div class="stat-label">Crop Classes</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Input Features</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="stat-num">RF</div><div class="stat-label">Random Forest</div></div></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ MISSION / PURPOSE ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-lg-6">
+          <span class="kicker">Our Mission</span>
+          <h2 class="section-title">Bringing data-driven decisions to every field.</h2>
+          <p class="section-text">
+            Agriculture still depends heavily on guesswork. Choosing the wrong crop for a piece
+            of land wastes water, fertilizer, time and money. Our system replaces that guesswork
+            with a trained machine learning model that reads your soil and weather conditions and
+            instantly recommends the crop that will thrive best.
+          </p>
+          <p class="section-text">
+            Built as a final-year software engineering project, it is designed to be lightweight,
+            accessible from any browser, and useful for farmers, agriculture students and research
+            institutions alike.
+          </p>
+          <ul class="feature-list">
+            <li><i class="fa-solid fa-check-circle"></i> Increase yield with the right crop choice</li>
+            <li><i class="fa-solid fa-check-circle"></i> Reduce fertilizer and water waste</li>
+            <li><i class="fa-solid fa-check-circle"></i> Free, browser-based, mobile friendly</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <div class="glass-panel mission-visual">
+            <div class="visual-header">
+              <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+              <span class="visual-title">crop_recommendation.ai</span>
+            </div>
+            <div class="visual-body">
+              <div class="vrow"><span>Nitrogen (N)</span><span class="vval">90</span></div>
+              <div class="bar"><i style="width:78%"></i></div>
+              <div class="vrow"><span>Phosphorus (P)</span><span class="vval">42</span></div>
+              <div class="bar"><i style="width:55%"></i></div>
+              <div class="vrow"><span>Potassium (K)</span><span class="vval">43</span></div>
+              <div class="bar"><i style="width:48%"></i></div>
+              <div class="vrow"><span>Temperature</span><span class="vval">23.4°C</span></div>
+              <div class="bar"><i style="width:62%"></i></div>
+              <div class="vrow"><span>Humidity</span><span class="vval">82%</span></div>
+              <div class="bar"><i style="width:82%"></i></div>
+              <div class="result-chip">
+                <i class="fa-solid fa-seedling"></i>
+                Recommended Crop: <strong>Rice</strong>
+                <span class="conf">98.7% confidence</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHO IT'S FOR ============ -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="kicker">Who Benefits</span>
+        <h2 class="section-title">Built for everyone in the agriculture chain</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="glass-card">
+            <div class="icon-bubble"><i class="fa-solid fa-tractor"></i></div>
+            <h5>Farmers</h5>
+            <p>Get instant crop recommendations based on the soil and weather of your own farm — no agronomist visit needed.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card">
+            <div class="icon-bubble"><i class="fa-solid fa-graduation-cap"></i></div>
+            <h5>Students & Researchers</h5>
+            <p>Explore a real-world ML pipeline end-to-end: preprocessing, training, evaluation and deployment with Flask.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass-card">
+            <div class="icon-bubble"><i class="fa-solid fa-building-columns"></i></div>
+            <h5>Agricultural Sector</h5>
+            <p>Cooperatives and extension officers can use it to advise smallholder farmers at scale, cheaply and quickly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW TO USE ============ -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="kicker">How To Use</span>
+        <h2 class="section-title">From soil reading to crop in 4 steps</h2>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-num">01</div>
+            <h6>Enter Your Data</h6>
+            <p>Provide N, P, K values, temperature, humidity, pH and rainfall for your land.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-num">02</div>
+            <h6>ML Model Analyzes</h6>
+            <p>A Random Forest pipeline processes the inputs through our trained model.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-num">03</div>
+            <h6>Get Recommendation</h6>
+            <p>Receive the best-fit crop with a confidence score in less than a second.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3">
+          <div class="step-card">
+            <div class="step-num">04</div>
+            <h6>Plan & Plant</h6>
+            <p>Use the recommendation to plan sowing, fertilization and irrigation strategy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ OBJECTIVES / FEATURES ============ -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="row g-5 align-items-start">
+        <div class="col-lg-6">
+          <span class="kicker">Project Objectives</span>
+          <h2 class="section-title">What this project sets out to achieve</h2>
+          <ul class="objective-list">
+            <li><span>01</span><div><strong>Accuracy.</strong> Build a model that classifies crops with high real-world accuracy (~99.5%).</div></li>
+            <li><span>02</span><div><strong>Accessibility.</strong> Deliver it via a clean web app any farmer or student can use.</div></li>
+            <li><span>03</span><div><strong>Education.</strong> Demonstrate a complete ML lifecycle for academic and portfolio use.</div></li>
+            <li><span>04</span><div><strong>Scalability.</strong> Structure the codebase so it can grow to include auth, history and analytics.</div></li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <span class="kicker">Core Features</span>
+          <h2 class="section-title">What's inside</h2>
+          <div class="row g-3">
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-flask"></i> ML-powered prediction</div></div>
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-chart-line"></i> Analytics dashboard</div></div>
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-user-lock"></i> Auth-ready structure</div></div>
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-mobile-screen"></i> Fully responsive UI</div></div>
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-bolt"></i> Sub-second inference</div></div>
+            <div class="col-sm-6"><div class="mini-card"><i class="fa-solid fa-code-branch"></i> Modular Flask code</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SYSTEM WORKFLOW ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="kicker">System Workflow</span>
+        <h2 class="section-title">From raw data to deployed prediction</h2>
+      </div>
+      <div class="workflow">
+        <div class="flow-step"><i class="fa-solid fa-database"></i><span>Crop Dataset</span></div>
+        <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="flow-step"><i class="fa-solid fa-filter"></i><span>Preprocessing</span></div>
+        <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="flow-step"><i class="fa-solid fa-brain"></i><span>Random Forest + GridSearch</span></div>
+        <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="flow-step"><i class="fa-solid fa-box-archive"></i><span>crop_pipeline.pkl</span></div>
+        <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="flow-step"><i class="fa-solid fa-server"></i><span>Flask API</span></div>
+        <div class="flow-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="flow-step"><i class="fa-solid fa-display"></i><span>Web UI</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TECHNOLOGIES ============ -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="text-center mb-5">
+        <span class="kicker">Tech Stack</span>
+        <h2 class="section-title">Technologies powering the system</h2>
+      </div>
+      <div class="row g-3 justify-content-center">
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-brands fa-python"></i><span>Python</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-solid fa-fire"></i><span>Flask</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-solid fa-brain"></i><span>Scikit-learn</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-solid fa-table"></i><span>Pandas</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-brands fa-html5"></i><span>HTML5</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-brands fa-css3-alt"></i><span>CSS3</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-brands fa-js"></i><span>JavaScript</span></div></div>
+        <div class="col-6 col-md-3"><div class="tech-card"><i class="fa-brands fa-bootstrap"></i><span>Bootstrap 5</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DEVELOPER ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="glass-panel dev-panel">
+        <div class="row align-items-center g-4">
+          <div class="col-md-4 text-center">
+            <div class="dev-photo-wrap">
+              <img src="{{ url_for('static', filename='images/developer.jpg') }}"
+                   onerror="this.src='https://avatars.githubusercontent.com/u/9919?v=4'"
+                   alt="Developer portrait" class="dev-photo" />
+              <div class="dev-photo-ring"></div>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <span class="kicker">Meet the Developer</span>
+            <h3 class="section-title mb-2">Built by a software engineering student.</h3>
+            <p class="section-text">
+              Hi! I'm the developer behind Smart Crop Recommendation System. I built this
+              project as part of my final year Requirement for graduation as a computer 
+              Science Student in Spiritan University Nneochi, combining my interest
+              in machine learning, full-stack development and real-world agricultural impact.
+              The goal was to ship something that is not just academic, but actually useful
+              and beautiful enough to live in my portfolio.
+            </p>
+            <div class="dev-socials">
+              <a href="#" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+              <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-band">
+        <h2>Ready to find the perfect crop for your land?</h2>
+        <p>Try the prediction engine — it takes less than 10 seconds.</p>
+        <a href="/signup" class="btn btn-glow-green btn-lg">
+          <i class="fa-solid fa-seedling me-2"></i>Start Predicting
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row gy-4">
+        <div class="col-md-5">
+          <a class="navbar-brand brand-logo" href="/">
+            <span class="logo-icon"><i class="fa-solid fa-seedling"></i></span>
+            <span class="logo-text">Smart<span class="logo-accent">Crop</span></span>
+          </a>
+          <p class="mt-3 text-muted-soft">
+            AI-powered crop recommendations for smarter, more sustainable farming.
+          </p>
+        </div>
+        <div class="col-6 col-md-3">
+          <h6 class="footer-title">Product</h6>
+          <ul class="footer-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/signup">Predict</a></li>
+            
+          </ul>
+        </div>
+        <div class="col-6 col-md-4">
+          <h6 class="footer-title">Connect</h6>
+          <ul class="footer-list">
+            <li><a href="#"><i class="fa-brands fa-github me-2"></i>GitHub</a></li>
+            <li><a href="#"><i class="fa-brands fa-linkedin me-2"></i>LinkedIn</a></li>
+            <li><a href="#"><i class="fa-solid fa-envelope me-2"></i>Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="footer-divider" />
+      <div class="text-center small text-muted-soft">
+        © <span id="year"></span> SmartCrop. Built with 🌱 for a final-year project.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll to top -->
+  <button id="scrollTopBtn" class="scroll-top" aria-label="Scroll to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/about.js') }}"></script>
+</body>
+</html>

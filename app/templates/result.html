@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result | Smart Crop Recommendation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+</head>
+<body>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar glass" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-mark"><i class="fa-solid fa-seedling"></i></div>
+      <span>CropAI</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('main.dashboard') }}" class="nav-item">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span class="nav-text">Dashboard</span>
+      </a>
+      <a href="{{ url_for('main.predict') }}" class="nav-item">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span class="nav-text">New Prediction</span>
+      </a>
+      
+      <a href="{{ url_for('main.history') }}" class="nav-item">
+        <i class="fa-solid fa-history"></i>
+        <span class="nav-text">History</span>
+      </a>
+      
+    
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="{{ url_for('auth.logout') }}" class="nav-item logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span class="nav-text">Logout</span>
+        <span class="logout-spinner spinner" hidden></span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="topbar glass">
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div>
+        <p class="eyebrow">RESULT</p>
+        <h1 class="title">Recommendation Result</h1>
+      </div>
+
+    
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, msg in messages %}
+            <div class="flash flash-{{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Hero result -->
+    <section class="result-hero card glass">
+      <div class="hero-left">
+        <span class="pill">Recommended Crop</span>
+        <h2 class="crop-name">{{ prediction or 'Rice' }}</h2>
+        <p class="crop-desc">
+          Based on your soil nutrients and climate inputs, this crop has the best fit for healthy growth.
+        </p>
+
+        <div class="confidence">
+         <div class="confidence-head">
+          <span>Model Accuracy</span>
+          <strong id="confValue">{{ confidence }}%</strong>
+        </div>
+
+        <div class="confidence-bar">
+        <div class="confidence-fill"
+         id="confFill"
+         data-value="{{ confidence }}">
+    </div>
+  </div>
+</div>
+
+        <div class="hero-actions">
+          <a href="{{ url_for('main.predict') }}" class="btn btn-primary">Predict Again</a>
+          <a href="{{ url_for('main.dashboard') }}" class="btn btn-ghost">Go to Dashboard</a>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <div class="crop-image">
+          <img src="{{ url_for('static', filename=crop_image) }}" alt="{{ prediction }}">
+        </div>
+      </div>
+    </section>
+
+    <!-- Two-column area -->
+    <section class="grid-2">
+      <div class="card glass">
+        <h3 class="card-title">Input Summary</h3>
+        <ul class="summary-list">
+          <li><span>Nitrogen (N)</span><strong>{{ inputs.N if inputs else '—' }}</strong></li>
+          <li><span>Phosphorus (P)</span><strong>{{ inputs.P if inputs else '—' }}</strong></li>
+          <li><span>Potassium (K)</span><strong>{{ inputs.K if inputs else '—' }}</strong></li>
+          <li><span>pH</span><strong>{{ inputs.ph if inputs else '—' }}</strong></li>
+          <li><span>Temperature</span><strong>{{ inputs.temperature if inputs else '—' }} °C</strong></li>
+          <li><span>Humidity</span><strong>{{ inputs.humidity if inputs else '—' }} %</strong></li>
+          <li><span>Rainfall</span><strong>{{ inputs.rainfall if inputs else '—' }} mm</strong></li>
+        </ul>
+      </div>
+
+      <div class="card glass">
+        <h3 class="card-title">Nutrient Profile</h3>
+        <p class="card-sub">Relative levels of N, P, K and pH in your soil.</p>
+        <div class="chart" id="chart">
+          <div class="bar" data-label="N" data-value="{{ inputs.N if inputs else 0 }}" data-max="140"></div>
+          <div class="bar" data-label="P" data-value="{{ inputs.P if inputs else 0 }}" data-max="140"></div>
+          <div class="bar" data-label="K" data-value="{{ inputs.K if inputs else 0 }}" data-max="200"></div>
+          <div class="bar" data-label="pH" data-value="{{ inputs.ph if inputs else 0 }}" data-max="14"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card glass explanation">
+      <div class="section-head">
+        <div>
+          <h3 class="card-title">Why this recommendation?</h3>
+          <p class="card-sub">The model evaluates soil nutrients, climate fit, and moisture balance to suggest the best crop.</p>
+        </div>
+      </div>
+
+      <ul class="explanation-list">
+        {% for reason in explanation %}
+          <li>
+            <span class="step">{{ loop.index }}</span>
+            <p>{{ reason }}</p>
+          </li>
+        {% endfor %}
+      </ul>
+
+      <div class="tips">
+        <div class="tip">
+          <h4>🌾 Soil Fit</h4>
+          <p>Your nutrient ratio aligns well with this crop's requirements.</p>
+        </div>
+        <div class="tip">
+          <h4>☀️ Climate Fit</h4>
+          <p>Temperature and humidity fall within the optimal range.</p>
+        </div>
+        <div class="tip">
+          <h4>💧 Water Need</h4>
+          <p>Rainfall level supports the crop's typical water demand.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">© CropAI —This recommendation was generated using a Random Forest Machine Learning model trained on crop suitability data.</footer>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/result.js') }}"></script>
+</body>
+</html>

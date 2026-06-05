@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>
+    New Prediction | Smart Crop Recommendation
+</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet">
+
+<link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet"
+      href="{{ url_for('static', filename='css/predict.css') }}">
+
+
+
+</head>
+<body>
+
+<!-- Background Orbs -->
+
+<div class="bg-orbs">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <span class="orb orb-3"></span>
+</div>
+
+<!-- Sidebar -->
+
+<aside class="sidebar glass" id="sidebar">
+
+    <div class="brand">
+        <div class="brand-mark">🌿</div>
+        <span class="brand-name">
+            CropAI
+        </span>
+    </div>
+
+    <nav class="side-nav">
+
+        <a href="{{ url_for('main.dashboard') }}"
+           class="nav-item">
+
+            <i class="fa-solid fa-gauge-high"></i>
+            <span class="nav-text">Dashboard</span>
+
+        </a>
+
+        
+
+    <a href="{{ url_for('main.history') }}"
+   class="nav-item">
+
+    <i class="fa-solid fa-clock-rotate-left"></i>
+    <span class="nav-text">Prediction History</span>
+
+</a>
+
+    </nav>
+
+    <div class="side-footer">
+
+        <a href="{{ url_for('auth.logout') }}"
+           class="nav-item logout">
+
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="nav-text">Logout</span>
+            <span class="logout-spinner spinner" hidden></span>
+
+        </a>
+
+    </div>
+
+</aside>
+
+<!-- Main Content -->
+
+<main class="main">
+
+    <!-- Topbar -->
+
+    <header class="topbar glass">
+
+        <button
+        class="menu-toggle"
+        id="menuToggle">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+        
+
+        <div>
+
+            <p class="eyebrow">
+                PREDICTION
+            </p>
+
+            <h1 class="title">
+                New Crop Recommendation
+            </h1>
+
+        </div>
+
+        <a href="{{ url_for('main.predict') }}"
+           class="nav-item active">
+
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            <span class="nav-text">New Prediction</span>
+
+        </a>
+
+    </header>
+
+    <!-- Form Card -->
+
+    <section class="card glass form-card">
+
+        <div class="card-head">
+
+            <h2>
+                Soil & Climate Inputs
+            </h2>
+
+            <p class="muted">
+                Enter the values below
+                and submit to get a
+                recommended crop.
+            </p>
+
+        </div>
+
+        <!-- Flash Messages -->
+
+        {% with messages =
+        get_flashed_messages(
+            with_categories=true
+        ) %}
+
+            {% if messages %}
+
+                {% for cat, msg in messages %}
+
+                    <div class="
+                        flash
+                        flash-{{ cat }}
+                    ">
+
+                        {{ msg }}
+
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+        <!-- Prediction Form -->
+
+        <form method="POST"
+        action="{{ url_for('main.predict') }}"
+        class="predict-form"
+        id="predictForm"
+        autocomplete="off">
+
+            <div class="grid">
+
+                <!-- Nitrogen -->
+
+                <div class="field">
+
+                    <label for="N">
+                        Nitrogen (N)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        max="200"
+                        id="N"
+                        name="N"
+                        placeholder="e.g. 90"
+                        value="{{ request.form.get('N','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        mg/kg · 0–200
+                    </span>
+
+                </div>
+
+                <!-- Phosphorus -->
+
+                <div class="field">
+
+                    <label for="P">
+                        Phosphorus (P)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        max="200"
+                        id="P"
+                        name="P"
+                        placeholder="e.g. 42"
+                        value="{{ request.form.get('P','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        mg/kg · 0–200
+                    </span>
+
+                </div>
+
+                <!-- Potassium -->
+
+                <div class="field">
+
+                    <label for="K">
+                        Potassium (K)
+                    </label>
+
+                    <input
+                        type="number"
+                        step="any"
+                        min="0"
+                        max="200"
+                        id="K"
+                        name="K"
+                        placeholder="e.g. 43"
+                        value="{{ request.form.get('K','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        mg/kg · 0–200
+                    </span>
+
+                </div>
+
+                <!-- pH -->
+
+                <div class="field">
+
+                    <label for="ph">
+                        Soil pH
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="14"
+                        id="ph"
+                        name="ph"
+                        placeholder="e.g. 6.5"
+                        value="{{ request.form.get('ph','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        0–14
+                    </span>
+
+                </div>
+
+                <!-- Temperature -->
+
+                <div class="field">
+
+                    <label for="temperature">
+                        Temperature
+                    </label>
+
+                    <input
+                       type="number"
+                       step="0.1"
+                       min="-10"
+                       max="60"
+                       id="temperature"
+                       name="temperature"
+                       placeholder="e.g. 25"
+                       value="{{ request.form.get('temperature','') }}"
+                       required
+                       >
+
+                    <span class="hint">
+                        °C
+                    </span>
+
+                </div>
+
+                <!-- Humidity -->
+
+                <div class="field">
+
+                    <label for="humidity">
+                        Humidity
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                        id="humidity"
+                        name="humidity"
+                        placeholder="e.g. 70"
+                        value="{{ request.form.get('humidity','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        % relative
+                    </span>
+
+                </div>
+
+                <!-- Rainfall -->
+
+                <div class="field field-wide">
+
+                    <label for="rainfall">
+                        Rainfall
+                    </label>
+
+                    <input
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        id="rainfall"
+                        name="rainfall"
+                        placeholder="e.g. 120"
+                        value="{{ request.form.get('rainfall','') }}"
+                        required
+                    >
+
+                    <span class="hint">
+                        mm
+                    </span>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+
+            <div class="form-actions">
+
+                <button type="reset"
+                        class="btn-ghost">
+
+                    Reset
+
+                </button>
+
+                <button type="submit"
+                        class="btn-primary"
+                        id="submitBtn">
+
+                    <span class="btn-text">
+                        Get Recommendation
+                    </span>
+
+                    <span class="spinner"
+                          hidden>
+                    </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+<script src="{{
+url_for(
+'static',
+filename='js/predict.js'
+) }}"></script>
+
+</body>
+</html>

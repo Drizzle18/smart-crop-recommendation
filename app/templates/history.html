@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prediction History | Smart Crop Recommendation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}">
+</head>
+<body>
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar glass" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="logo-mark"><i class="fa-solid fa-history"></i></div>
+      <span>CropAI</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('main.dashboard') }}" class="nav-item">
+        <i class="fa-solid fa-gauge-high"></i>
+        <span class="nav-text">Dashboard</span>
+      </a>
+      <a href="{{ url_for('main.predict') }}" class="nav-item">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span class="nav-text">New Prediction</span>
+      </a>
+      <a href="{{ url_for('main.history') }}" class="nav-item active">
+        <i class="fa-solid fa-history"></i>
+        <span class="nav-text">History</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="{{ url_for('auth.logout') }}" class="nav-item logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span class="nav-text">Logout</span>
+        <span class="logout-spinner spinner" hidden></span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <header class="topbar glass">
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+
+      <div>
+        <p class="eyebrow">HISTORY</p>
+        <h1 class="title">Prediction History</h1>
+      </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flashes">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <section class="stats">
+
+  <div class="stat-card">
+    <span class="stat-label">Total Predictions</span>
+    <span class="stat-value">{{ history|length }}</span>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Most Recommended</span>
+    <span class="stat-value">{{ top_crop|title if top_crop else '—' }}</span>
+  </div>
+
+  <div class="stat-card">
+    <span class="stat-label">Model Accuracy</span>
+    <span class="stat-value">99.55%</span>
+  </div>
+
+</section>
+
+<section class="toolbar">
+  <div class="toolbar-actions">
+    <input type="text" id="search" placeholder="Search by crop name..." class="search-input">
+    <select id="filter" class="filter-select">
+      <option value="all">All time</option>
+      <option value="week">Last 7 days</option>
+      <option value="month">Last 30 days</option>
+    </select>
+  </div>
+</section>
+
+<section class="card">
+        {% if history and history|length > 0 %}
+        <div class="table-wrap">
+          <table class="history-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Crop</th>
+                <th>N</th>
+                <th>P</th>
+                <th>K</th>
+                <th>pH</th>
+                <th>Temp</th>
+                <th>Humidity</th>
+                <th>Rainfall</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for h in history %}
+              <tr data-crop="{{ h.crop|lower }}" data-date="{{ h.created_at }}"> 
+                <td>{{ loop.index }}</td>
+                <td class="date-cell">{{ h.created_at.strftime('%d %b %Y, %I:%M %p') }}</td>
+                <td class="crop-cell">
+                  <img
+                  src="{{ url_for('static',
+                  filename='images/crops/'
+                   ~ h.crop|lower ~ '.jpg') }}"
+                  alt="{{ h.crop }}"
+                  class="crop-thumb"
+                  >
+                  <span class="crop-pill">
+                    {{ h.crop|title }}
+                  </span>
+                </td>                
+                <td>{{ h.N }}</td>
+                <td>{{ h.P }}</td>
+                <td>{{ h.K }}</td>
+                <td>{{ h.ph }}</td>
+                <td>{{ "%.1f"|format(h.temperature) }}</td>
+                <td>{{ "%.1f"|format(h.humidity) }}</td>
+                <td>{{ "%.1f"|format(h.rainfall) }}</td>
+                
+                <td class="actions">
+
+    <a href="{{ url_for('main.view_prediction', prediction_id=h.id) }}"
+       class="btn-view">
+
+       <i class="fa-solid fa-eye"></i>
+
+    </a>
+
+    <form action="{{ url_for('main.delete_history', id=h.id) }}"
+          method="POST"
+          style="display:inline;">
+                    <button type="submit" class="btn-icon" title="Delete">✕</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty">
+          <div class="empty-icon">🌱</div>
+          <h3>No predictions yet</h3>
+          <p class="muted">Run your first crop recommendation to see it here.</p>
+          <a href="{{ url_for('main.predict') }}" class="btn btn-primary">Start a prediction</a>
+        </div>
+        {% endif %}
+      </section>
+
+      <footer class="foot">© CropAI — Smart Crop Recommendation</footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/history.js') }}"></script>
+  </body>
+</html>
