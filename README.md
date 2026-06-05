@@ -1,4 +1,5 @@
-# Smart Crop Recommendation
+# Smart Crop Recommendation System
+My project description...
 
 Professional crop recommendation web application using a Random Forest model to suggest optimal crops based on soil and environmental inputs.
 
@@ -285,3 +286,7 @@ Specify your license here (e.g., MIT). If unsure, add `LICENSE` later.
 
 Questions or help — please contact the project creator listed above.
 
+=======
+# smart-crop-recommendation
+AI-powered Smart Crop Recommendation System built with Flask, Machine Learning, PostgreSQL and Random Forest.
+>>>>>>> 008d9d12605b7b3ecfa05a4871d4b37e959ff2fb
