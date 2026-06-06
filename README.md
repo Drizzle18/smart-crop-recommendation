@@ -181,36 +181,22 @@ The migration that created the `predictions` table is in `migrations/versions/d5
 Use the UI or the templates in `app/templates/` for references.
 
 ---
-
-## System Workflow
-
-1. User registers an account.
-2. User logs into the system.
-3. User enters environmental and soil parameters:
-   - Nitrogen (N)
-   - Phosphorus (P)
-   - Potassium (K)
-   - Temperature
-   - Humidity
-   - pH
-   - Rainfall
-4. The Flask backend validates the inputs.
-5. The trained Random Forest model generates a prediction.
-6. The recommendation result is displayed with:
-   - Crop name
-   - Crop image
-   - Explanation
-   - Model accuracy
-7. Prediction history is stored in PostgreSQL.
-8. Users can review or delete previous predictions.
-
-## Author
+## Developer
 
 **Michael Uchenna**
 
-- Final Year Computer Science Student
-- Spiritan University Nneochi Nigeria
-- Developer of the Smart Crop Recommendation System.
+Final Year Computer Science Student  
+Spiritan University Nneochi, Abia State, Nigeria
+
+### Responsibilities
+
+- Machine Learning Model Development
+- Flask Backend Development
+- Frontend Design and Implementation
+- Database Design and Integration
+- System Testing and Deployment
+
+GitHub: https://github.com/Drizzle18
 
 ### Roles
 
@@ -257,6 +243,20 @@ GitHub:https://github.com/Drizzle18
 7. Prediction history is stored in PostgreSQL.
 8. Users can review or delete previous predictions.
 
+## Future Improvements
+
+- Weather API integration
+- Fertilizer recommendation system
+- Mobile application version
+- Real-time agricultural analytics
+- Multi-crop ranking recommendations
+- Location-based crop prediction
+
+
+## Project Status
+
+✅ Completed Final Year Project (2026)
+
 
 ## Acknowledgements
 
@@ -285,8 +285,3 @@ Specify your license here (e.g., MIT). If unsure, add `LICENSE` later.
 ## Contact
 
 Questions or help — please contact the project creator listed above.
-
-=======
-# smart-crop-recommendation
-AI-powered Smart Crop Recommendation System built with Flask, Machine Learning, PostgreSQL and Random Forest.
->>>>>>> 008d9d12605b7b3ecfa05a4871d4b37e959ff2fb
