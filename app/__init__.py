@@ -11,7 +11,11 @@ and registers blueprints.
 """
 
 # Flask core
-from flask import Flask
+import logging
+from flask import Flask, render_template, request, jsonify
+
+# Exceptions
+from sqlalchemy.exc import SQLAlchemyError
 
 # Environment variable loader
 from dotenv import load_dotenv
@@ -25,6 +29,10 @@ import os
 
 # Load values from .env file
 load_dotenv()
+
+# Configure basic logging for console tracking
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 # ------------------------------------------------
@@ -90,11 +98,13 @@ def create_app():
 
     # SQLAlchemy engine options
     # Helps prevent stale cloud connections
+    # Added pool_timeout to prevent infinite hanging when internet drops
     app.config[
         "SQLALCHEMY_ENGINE_OPTIONS"
     ] = {
         "pool_pre_ping": True,
-        "pool_recycle": 300
+        "pool_recycle": 300,
+        "pool_timeout": 8
     }
 
     # ------------------------------------------
@@ -192,6 +202,55 @@ def create_app():
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
+
+    # ------------------------------------------
+    # GLOBAL APPLICATION ERROR HANDLERS
+    # ------------------------------------------
+
+    @app.errorhandler(SQLAlchemyError)
+    def handle_database_error(error):
+        """Catches raw database and internet connection dropouts gracefully."""
+        logger.error(f"PostgreSQL Link Failure: {str(error)}")
+        
+        # Returns a clean message if the frontend used a JSON API request
+        if request.path.startswith('/api/') or request.is_json:
+            return jsonify({
+                "status": "error",
+                "message": "Database server could not be reached. Check network connection."
+            }), 500
+            
+        # Standard web-browser navigation gets a clean UI notice
+        return render_template(
+            "errors.html",
+            error_title="Database Connection Lost",
+            error_message="The application failed to communicate with the cloud storage database. Please verify your internet connection and try reloading the page."
+        ), 500
+
+    @app.errorhandler(404)
+    def handle_not_found_error(error):
+        """Handles page links or web routes that do not exist."""
+        if request.path.startswith('/api/') or request.is_json:
+            return jsonify({"status": "error", "message": "Resource not found"}), 404
+            
+        return render_template(
+            "errors.html",
+            error_title="Server Link Not Found (404)",
+            error_message="The specific section or interface action you are requesting was not located on this server."
+        ), 404
+
+    @app.errorhandler(Exception)
+    def handle_generic_crash(error):
+        """Catch-all backup tracker prevents unhandled runtime faults from killing the app process."""
+        logger.critical(f"Critical Runtime Exception: {str(error)}", exc_info=True)
+        
+        if request.path.startswith('/api/') or request.is_json:
+            return jsonify({"status": "error", "message": "An unexpected error occurred."}), 500
+            
+        return render_template(
+            "errors.html",
+            error_title="Internal Application Error",
+            error_message="The smart crop system encountered an internal execution error. The system execution logs have been updated."
+        ), 500
 
     # ------------------------------------------
     # RETURN CONFIGURED APPLICATION
