@@ -255,22 +255,22 @@ h1{
 
     <div class="actions">
 
-        <a href="{{ url_for('main.dashboard') }}"
-           class="btn btn-primary">
+    <a href="{{ url_for('main.landing') }}"
+       class="btn btn-primary">
 
-            Dashboard
+        Back Home
 
-        </a>
+    </a>
 
-        <button
-            onclick="window.location.reload();"
-            class="btn btn-secondary">
+    <button
+        onclick="location.href=document.referrer || '/'"
+        class="btn btn-secondary">
 
-            Retry
+        Go Back
 
-        </button>
+    </button>
 
-    </div>
+</div>
 
 </div>
 

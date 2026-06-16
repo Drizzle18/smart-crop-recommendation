@@ -404,19 +404,16 @@ def predict():
 
             db.session.rollback()
 
-            print(
-                f"Prediction Error: {e}"
-            )
+            print(f"Prediction Error: {e}")
 
             flash(
-                f"Prediction Error: {str(e)}",
+                "Something went wrong while processing your request. Please try again later.",
                 "danger"
-            )
-
-            return redirect(
-                url_for("main.predict")
                 )
 
+        return redirect(
+        url_for("main.predict")
+        )
     return render_template(
         "predict.html",
         user=current_user
