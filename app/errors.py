@@ -104,9 +104,9 @@ def register_error_handlers(app):
 
         return render_template(
             "error.html",
-            error_title="Database Error",
+            error_title=" Server Error",
             error_message=(
-                "A database error occurred. "
+                "A Server error occurred. "
                 "Please try again later."
             )
         ), 500
